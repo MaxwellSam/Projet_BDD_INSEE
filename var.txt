@@ -1,0 +1,36 @@
+#### dep_eco ####
+#### reg_eco ####
+
+ta = Taux d’activité (%)
+te = Taux d'emploi (%)
+dipl = Part des diplômés
+dipl_jeune = Part des jeunes diplômés agés de 18-25 ans (%) 2014
+voiture = Modes de transport pour se rendre au travail  en voiture (%)
+commun = Modes de transport pour se rendre au travail  en transport en commun (%)
+autre = Modes de transport pour se rendre au travail  par un autre moyen (%) 
+poids = Poids de l'économie sociale et solidaire dans les emplois salariés du territoire (%)
+effort = Effort de recherche et développement (%) 
+
+
+#### dep_social ####
+#### reg_social ####
+
+esp_h = Espérance de vie des hommes à la naissance
+esp_f = Espérance de vie des femmes à la naissance
+disp =  Disparité de niveau de vie (Rapport interdécile)
+pauvrete = Taux de pauvreté (%) (2018)
+jeune_ni = Part des jeunes non insérés (%)
+eloignement = Part de la population éloignée de plus de 7 mn des services de santé de proximité
+inondable = Part de la population estimée en zone inondable (%)
+
+
+#### dep_evo ####
+#### reg_evo ####
+
+pop_2012 = Population au 1er janvier 2012 (en milliers)
+pop_2017 = Population au 1er janvier 2017 (en milliers)
+pop_2018 = Population au 1er janvier 2018 (en milliers)
+est_2020 = Estimation de la population au 1er janvier 2020 (en milliers) (p)
+var_2012_2017 = Variation annuelle moyenne 2012-2017 (en %)
+var_nat = Variation annuelle moyenne due au solde naturel (en %)
+var_es = Variation annuelle moyenne due au solde apparent des entrŽes et des sorties (en %)
