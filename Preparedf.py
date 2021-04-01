@@ -41,13 +41,17 @@ print("region_eco_data :", region_eco_data.columns.values)
 
 print("\n### Preparation des dataframes ###\n")
 
+################## Stockage dans les variables ####################
+
 # Données propres aux régions /
 
 ## dataframe region 
 r_numero = region_data["reg"].values
 r_ncc = region_data["ncc"].values
+r_libelle = region_data["libelle"].values
 
 # evo var_2012_2017;var_nat;var_es
+r_pop_numero = region_evo_data["numero"].values
 r_pop_2012 = region_evo_data["pop_2012"].values
 r_pop_2017 = region_evo_data["pop_2017"].values
 r_est_2020 = region_evo_data["est_2020"].values
@@ -56,6 +60,7 @@ r_var_nat = region_evo_data["var_nat"].values
 r_var_es = region_evo_data["var_es"].values
 
 # eco
+r_eco_numero = region_eco_data["numero"].values
 r_te_2014 = region_eco_data["te_2014"].values
 r_te_2009 = region_eco_data["te_2009"].values
 r_dipl_2017 = region_eco_data["dipl_2017"].values
@@ -90,11 +95,12 @@ r_inondable_2013 = region_social_data["inondable_2013"].values
 r_inondable_2008 = region_social_data["inondable_2008"].values
 
 ## dataframe departement 
+
 d_numero = dep_data["dep"].values
 d_ncc = dep_data["ncc"].values
 
 #evo
-num_dep = dep_data["dep"]
+d_pop_numero = dep_evo_data["numero"].values
 d_pop_2012 = dep_evo_data["pop_2012"].values
 d_pop_2017 = dep_evo_data["pop_2017"].values
 d_pop_2018 = dep_evo_data["pop_2018"].values
@@ -130,3 +136,64 @@ d_pauvrete_2019 = dep_social_data["jeune_ni_2019"].values
 d_eloignement = dep_social_data["eloignement"].values
 d_inondable_2013 = dep_social_data["inondable_2013"].values
 d_inondable_2008 = dep_social_data["inondable_2008"].values
+
+
+###################### Creation des dataframes ##############################
+
+#### Tables POP_REGION
+
+## creation de la colonne des numero_regions pour la table population
+r_pop_num = myTool.flatList([r_pop_numero, r_pop_numero, r_pop_numero])
+print(r_pop_num)
+print(len(r_pop_num))
+## creation de la colonne des annee pour la table population
+r_pop_annees = myTool.creationColAnnee (len(r_pop_2012), [2012, 2017, 2020])
+print(r_pop_annees)
+print(len(r_pop_annees))
+## creation de la colonne des population pour la table population
+r_pop = myTool.flatList([r_pop_2012, r_pop_2017, r_est_2020])
+print(r_pop)
+print(len(r_pop))
+
+data_pop_reg ={'numero_region':r_pop_num, 'population':r_pop, 'annee':r_pop_annees}
+population_regions_df = pd.DataFrame(data=data_pop_reg)
+print(population_regions_df)
+
+#### Tables RECH_DEV
+
+r_eco_num = myTool.flatList([r_eco_numero, r_eco_numero])
+print(r_eco_num)
+print(len(r_eco_num))
+r_eco_annees = myTool.creationColAnnee (len(r_effort_2010), [2010, 2014])
+print(r_eco_annees)
+print(len(r_eco_annees))
+r_eco_effort = myTool.flatList([r_effort_2010, r_effort_2014])
+print(r_eco_effort)
+print(len(r_eco_effort))
+data_effort_reg = {'numero_region':r_eco_num, 'effort':r_eco_effort, 'annee':r_eco_annees}
+effort_region_df = pd.DataFrame(data=data_effort_reg)
+
+print(effort_region_df)
+
+#### Tables POP_DEP
+
+## creation de la colonne des numero_regions pour la table population
+d_pop_num = myTool.flatList([d_pop_numero, d_pop_numero, d_pop_numero, d_pop_numero])
+print(d_pop_num)
+print(len(d_pop_num))
+## creation de la colonne des annee pour la table population
+d_pop_annees = myTool.creationColAnnee (len(d_pop_2012), [2012, 2017, 2018, 2020])
+print(d_pop_annees)
+print(len(d_pop_annees))
+## creation de la colonne des population pour la table population
+d_pop = myTool.flatList([d_pop_2012, d_pop_2017,d_pop_2018, d_est_2020])
+print(d_pop)
+print(len(d_pop))
+
+data_pop_dep ={'numero_departement':d_pop_num, 'population':d_pop, 'annee':d_pop_annees}
+
+population_departement_df = pd.DataFrame(data=data_pop_dep)
+print(population_departement_df)
+
+
+
