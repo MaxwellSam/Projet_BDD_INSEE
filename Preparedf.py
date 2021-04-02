@@ -78,6 +78,7 @@ r_effort_2010 = region_eco_data["effort_2010"].values
 
 
 # social
+r_social_labelle = region_social_data["reg"].values
 r_esp_h_2019 = region_social_data["esp_h_2019"].values
 r_esp_h_2015 = region_social_data["esp_h_2015"].values
 r_esp_h_2010 = region_social_data["esp_h_2010"].values
@@ -121,6 +122,7 @@ d_voiture_2009 = dep_eco_data["voiture_2009"].values
 d_commun_2014 = dep_eco_data["commun_2014"].values
 
 #social
+d_social_labelle = dep_social_data["dep"].values
 d_esp_h_2019 = dep_social_data["esp_h_2019"].values
 d_esp_h_2015 = dep_social_data["esp_h_2015"].values
 d_esp_h_2010 = dep_social_data["esp_h_2010"].values
@@ -132,7 +134,7 @@ d_pauvrete_2018 = dep_social_data["pauvrete_2018"].values
 d_pauvrete_2014 = dep_social_data["pauvrete_2014"].values
 d_jeune_ni_2017 = dep_social_data["jeune_ni_2017"].values
 d_jeune_ni_2014 = dep_social_data["jeune_ni_2014"].values
-d_pauvrete_2019 = dep_social_data["jeune_ni_2019"].values
+d_jeune_ni_2019 = dep_social_data["jeune_ni_2019"].values
 d_eloignement = dep_social_data["eloignement"].values
 d_inondable_2013 = dep_social_data["inondable_2013"].values
 d_inondable_2008 = dep_social_data["inondable_2008"].values
@@ -194,6 +196,57 @@ data_pop_dep ={'numero_departement':d_pop_num, 'population':d_pop, 'annee':d_pop
 
 population_departement_df = pd.DataFrame(data=data_pop_dep)
 print(population_departement_df)
+
+#### Tables ESPERANCE_VIE
+
+data_esp_vie_h = myTool.creatDFcommunDepReg (
+                        r_social_labelle, 
+                        d_social_labelle, 
+                        [r_esp_h_2010, r_esp_h_2015, r_esp_h_2019], 
+                        [d_esp_h_2010, d_esp_h_2015, d_esp_h_2019], 
+                        [2010, 2015, 2019]
+                        )
+                        
+data_esp_vie_f = myTool.creatDFcommunDepReg (
+                        r_social_labelle, 
+                        d_social_labelle, 
+                        [r_esp_f_2010, r_esp_f_2015, r_esp_f_2019],
+                        [d_esp_f_2010, d_esp_f_2015, d_esp_f_2019], 
+                        [2010, 2015, 2019]
+                        )
+                        
+labelle = data_esp_vie_h["labelle"] 
+esp_vie_h = data_esp_vie_h["variable"]
+esp_vie_f = data_esp_vie_f["variable"]
+annee = data_esp_vie_h["annee"]
+data_esp = {'labelle':labelle, 'esperance_homme':esp_vie_h, 'esperance_femme':esp_vie_f, 'annee':annee}
+Esperance_vie_df = pd.DataFrame(data=data_esp)
+print(Esperance_vie_df)
+
+# VarRegParAnnee = []
+# VarRegParAnnee.append([r_esp_h_2010, r_esp_h_2015, r_esp_h_2019])
+# VarRegParAnnee.append([r_esp_f_2010, r_esp_f_2015, r_esp_f_2019])
+# VarDepParAnnee = []
+# VarDepParAnnee.append([d_esp_h_2010, d_esp_h_2015, d_esp_h_2019])
+# VarDepParAnnee.append([d_esp_f_2010, d_esp_f_2015, d_esp_f_2019])
+#
+# data_cleaned_esp = myTool.creatDFcommunDepReg2(r_social_labelle, d_social_labelle,VarRegParAnnee, VarDepParAnnee, [2010, 2015, 2019])
+
+#### TAUX_PAUVRETE
+
+data_t_a = myTool.creatDFcommunDepReg(
+                        r_social_labelle, 
+                        d_social_labelle, 
+                        [r_pauvrete_2014, r_pauvrete_2018],
+                        [d_pauvrete_2014, d_pauvrete_2018],
+                        [2014, 2018]
+                        )
+labelle = data_t_a["labelle"]
+t_a = data_t_a["variable"]
+annee = data_t_a["annee"]
+data_t_a = {'labelle': labelle, 'taux_pauvrete':t_a, 'annee':annee}
+Taux_pauvrete_df = pd.DataFrame(data_t_a)
+print(Taux_pauvrete_df)
 
 
 
