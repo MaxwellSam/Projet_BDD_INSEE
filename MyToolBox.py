@@ -80,7 +80,7 @@ def creatDFcommunDepReg (libelleReg, libelleDep, listVarReg, listVarDep, listAnn
     for i in range(len(listVarDep)):
         listVariables.append(flatList([listVarReg[i], listVarDep[i]]))
     dataCleaned = removeDoublons(libelleList, listVariables)
-    # creation des colones : 
+    # creation des colones :
     coloneLabelle = []
     comp = 0
     while comp < len(dataCleaned["variables"]):
@@ -91,27 +91,24 @@ def creatDFcommunDepReg (libelleReg, libelleDep, listVarReg, listVarDep, listAnn
     colVariable = flatList(dataCleaned["variables"])
     return {"libelle":coloneLabelle, "variable":colVariable, "annee":coloneAnnee}
 
+def creatListYear (n, year):
+    """
+    produit une liste contenant n fois le chiffre year
+    :param n: le nombre d'éléments que doit contenir la liste
+    :param year: l'élément qui doit être répété dans la liste
+    :type n: int
+    :type year: int
+    :return listYear: la liste de n fois year
+    :rtype: list
+    """
+    comp = 0
+    listYear = []
+    while comp < n :
+        listYear.append(year) 
+    return listYear
 
-# def creatDFcommunDepReg2 (libelleReg, libelleDep, VarRegParAnnee, VarDepParAnnee, listAnnees):
-#     libelleList = flatList([libelleReg, libelleDep])
-#     listVariables = []
-#     for i in range(len(listAnnees)):
-#         print("#",i)
-#         print(len(VarRegParAnnee))
-#         print("##", len(VarRegParAnnee[i]))
-#         for j in range(len(VarRegParAnnee[i])):
-#             listVariables.append(flatList([VarRegParAnnee[i][j], VarDepParAnnee[i][j]]))
-#     dataCleaned = removeDoublons(libelleList, listVariables)
-#     # creation des colones :
-#     coloneLabelle = []
-#     comp = 0
-#     while comp < len(dataCleaned["variables"]):
-#         coloneLabelle.append(dataCleaned["libelles"])
-#         comp += 1
-#     coloneAnnee = creationColAnnee(len(coloneLabelle[0]), listAnnees)
-#     coloneLabelle = flatList(coloneLabelle)
-#     return {"libelle":coloneLabelle, "variable":dataCleaned["variables"], "annee":coloneAnnee}
-    
+
+
         
         
     

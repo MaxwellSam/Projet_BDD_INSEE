@@ -24,7 +24,8 @@ print("\n#### Projet INSEE // M1S2 // BDD ####")
 print("############# SCRIPT 1 ##############\n")
 print("### Importation des données (csv) et Preparation des DataFrame###\n")
 # execution du fichier d'importation des données et de préparation des df : 
-exec(open("Preparedf.py").read())
+#exec(open("Preparedf.py").read())
+exec(open("PrepData2.py").read())
 print("\n### Dataframes prêtes ###\n")
 
 # Connexion à postgresql
@@ -43,7 +44,7 @@ print('Connexion a la base de donnees...')
 USERNAME="smaxwell"
 PASSWORD="SQLsam"
 
-engine = create_engine('postgresql+psycopg2//smaxwell:SQLsam@pgsql:5432/smaxwell')
-Regions.to_sql('Regions',engine)
+# engine = create_engine('postgresql+psycopg2//smaxwell:SQLsam@pgsql:5432/smaxwell')
+# Regions.to_sql('Regions',engine)
 
 print('Connecte a la base de donnees')
