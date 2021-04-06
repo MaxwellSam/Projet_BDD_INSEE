@@ -1,18 +1,56 @@
+#! /usr/bin/env python3
+# coding: utf-8
+""""
+BDD 
+04/2021
+Projet Insee
 
-## Dataframe Region 
-# note : centralise toutes les informations sur les régions en un seul dataframe
-#1) importation des csv
+title : PrepData2.py
+authors : MAXWELL - GOMES - SOU
+description : Importation des csv et génération des dataframes
+"""
+
+################################ Importation des csv ################################
+
+print("# Importation des csv ...")
+#1) importation des csv concernant les régions : 
 region = pd.read_csv('data/region2020.csv', sep=',', index_col="nccenr")
+print("** data/region2020.csv")
 r_evo = pd.read_csv('data/f_region_evo.csv', sep=';', index_col="reg")
+print("** data/f_region_evo.csv")
 r_social = pd.read_csv('data/f_region_social.csv', sep=';', index_col="reg")
+print("** data/f_region_social.csv")
 r_eco = pd.read_csv('data/f_region_eco.csv', sep=';', index_col="reg")
+print("** data/f_region_eco.csv")
+#2) importation des csv concernant les départements : 
+departement = pd.read_csv('data/departement2020.csv', sep=',', index_col="nccenr")
+print("** data/departement2020.csv")
+d_evo = pd.read_csv('data/f_dep_evo.csv', sep=';', index_col="dep")
+print("** data/f_dep_evo.csv")
+d_social = pd.read_csv('data/f_dep_social.csv', sep=';', index_col="dep")
+print("** data/f_dep_social.csv")
+d_eco = pd.read_csv('data/f_dep_eco.csv', sep=';', index_col="dep")
+print("** data/f_dep_eco.csv")
+
+############################## DF propres aux regions ###############################
 
 ## creation Region ## 
-
 frames = [region, r_evo, r_social, r_eco]
 dfReg = pd.concat(frames, axis=1, join="inner") # concatenation par nccenr <--> reg
 # selection des colones d'interet
-Regions = dfReg[['reg', 'ncc', 'libelle', 'var_2012_2017', 'var_nat', 'var_es', 'disp_2014', 'eloignement_2016', 'ta_2017', 'dipl_2017', 'poids_2015']]
+Regions = dfReg[[
+    'reg', 
+    'ncc', 
+    'libelle', 
+    'var_2012_2017', 
+    'var_nat', 
+    'var_es', 
+    'disp_2014', 
+    'eloignement_2016', 
+    'ta_2017', 
+    'dipl_2017', 
+    'poids_2015'
+]]
 print("\nRegions\n", Regions)
 print(Regions.columns)
 
@@ -44,3 +82,28 @@ r_eff_2010["annee"] = 2010
 Recherche_dev = pd.concat([r_eff_2010, r_eff_2014])
 print("\nRecherche_Dev\n", Recherche_dev)
 
+############################## DF propres aux regions ###############################
+
+## Creation Departement ##
+frames = [departement, d_evo, d_social, d_eco]
+dfDep = pd.concat(frames, axis=1, join="inner")
+# selection des colones d'interet
+Departements = dfDep[[
+    'reg',
+    'dep', 
+    'ncc', 
+    'libelle', 
+    'var_2012_2017', 
+    'var_nat', 
+    'var_es', 
+    'disp_2014', 
+    'eloignement_2016', 
+    'ta_2017', 
+    'dipl_2017', 
+    'poids_2015'
+]]
+print("\nDepartemens\n", Departements)
+
+############################### DF commun #################################
+
+## 
