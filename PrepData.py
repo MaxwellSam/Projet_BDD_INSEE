@@ -32,6 +32,8 @@ print("** data/f_dep_social.csv")
 d_eco = pd.read_csv('data/f_dep_eco.csv', sep=';', index_col="dep")
 print("** data/f_dep_eco.csv")
 
+### netoyage 
+
 ############################## DF propres aux regions ###############################
 
 ## creation Region ## 
@@ -291,4 +293,5 @@ Transport = pd.concat([
     d_transp_2014
 ])
 print("\nTransport\n", Transport)
+print("test", Transport["voiture"][1])
 ##  

@@ -62,6 +62,7 @@ except (Exception, psycopg2.DatabaseError) as error:
 
 ## Chargement des données dans le sql :
 Regions = Regions.replace(np.nan, 'NULL')
+Regions = Regions.replace(',', '.', regex=True)
 for i in range(len(Regions)):
     command = ("""
     INSERT INTO Regions (
@@ -76,29 +77,28 @@ for i in range(len(Regions)):
     taux_activite_2017,
     part_diplomes_2017,
     poids_economie_2015 
-    ) VALUES (%s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s)
+    ) VALUES (%s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s);
     """ % (
-    Regions.loc[i, "reg"], 
-    Regions.loc[i, "ncc"], 
-    Regions.loc[i, "libelle"], 
-    Regions.loc[i, "var_2012_2017"], 
-    Regions.loc[i, "var_nat"], 
-    Regions.loc[i, "var_es"],  
-    Regions.loc[i, "disp_2014"],
-    Regions.loc[i, "eloignement_2016"],
-    Regions.loc[i, "ta_2017"],
-    Regions.loc[i, "dipl_2017"],
-    Regions.loc[i, "poids_2015"],
+    Regions["reg"][i], 
+    Regions["ncc"][i], 
+    Regions["libelle"][i], 
+    Regions["var_2012_2017"][i], 
+    Regions["var_nat"][i], 
+    Regions["var_es"][i],  
+    Regions["disp_2014"][i],
+    Regions["eloignement_2016"][i],
+    Regions["ta_2017"][i],
+    Regions["dipl_2017"][i],
+    Regions["poids_2015"][i]
     ))
     cur.execute(command)
-
 
 ################################# DEPARTEMENT ########################################
 print("Creation table Departement") 
 command = (
         """
         CREATE TABLE Departements (
-        num_dep INT NOT NULL,
+        num_dep VARCHAR(1000),
         num_region INT NOT NULL, 
         ncc VARCHAR(1000), 
         libelle VARCHAR(1000),
@@ -121,6 +121,8 @@ except (Exception, psycopg2.DatabaseError) as error:
 
 # Chargement des données dans le sql :
 Departements = Departements.replace(np.nan, 'NULL')
+Departements = Departements.replace(',', '.', regex=True)
+Departements = Departements.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Departements)):
     command = ("""
     INSERT INTO Departements (
@@ -136,20 +138,20 @@ for i in range(len(Departements)):
     taux_activite_2017,
     part_diplomes_2017,
     poids_economie_2015 
-    ) VALUES (%s, %s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s)
+    ) VALUES ('%s', %s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s);
     """ % (
-    Departements.loc[i, "dep"],
-    Departements.loc[i, "reg"], 
-    Departements.loc[i, "ncc"], 
-    Departements.loc[i, "libelle"], 
-    Departements.loc[i, "var_2012_2017"], 
-    Departements.loc[i, "var_nat"], 
-    Departements.loc[i, "var_es"],  
-    Departements.loc[i, "disp_2014"],
-    Departements.loc[i, "eloignement_2016"],
-    Departements.loc[i, "ta_2017"],
-    Departements.loc[i, "dipl_2017"],
-    Departements.loc[i, "poids_2015"]
+    Departements["dep"][i],
+    Departements["reg"][i], 
+    Departements["ncc"][i], 
+    Departements["libelle"][i], 
+    Departements["var_2012_2017"][i], 
+    Departements["var_nat"][i], 
+    Departements["var_es"][i],  
+    Departements["disp_2014"][i],
+    Departements["eloignement_2016"][i],
+    Departements["ta_2017"][i],
+    Departements["dipl_2017"][i],
+    Departements["poids_2015"][i]
     ))
     cur.execute(command)
 
@@ -172,21 +174,23 @@ except (Exception, psycopg2.DatabaseError) as error:
     
 # chargement des données dans le sql 
 Pop_regions = Pop_regions.replace(np.nan, 'NULL')
+Pop_regions = Pop_regions.replace(',', '.', regex=True)
+Pop_regions["pop"] = Pop_regions["pop"].replace(' ', '', regex=True)
 for i in range(len(Pop_regions)):
     command = ("""
     INSERT INTO Population_Regions (num_region, population, annee) 
     VALUES (%s,%s,%s);
     """ % (
-    Pop_region.loc[i,'numero'], 
-    Pop_region.loc[i,'pop'], 
-    Pop_region.loc[i,'annee']
+    Pop_regions['numero'][i], 
+    Pop_regions['pop'][i], 
+    Pop_regions['annee'][i]
     ))
     cur.execute(command)
     
 print("Creation table Population_departements") 
 command = ("""
         CREATE TABLE Population_Departements (
-        num_departement INT NOT NULL, 
+        num_departement VARCHAR(1000), 
         population FLOAT, 
         annee INT
        );
@@ -200,6 +204,8 @@ except (Exception, psycopg2.DatabaseError) as error:
     
 # chargement des données dans le sql 
 Pop_departements = Pop_departements.replace(np.nan, 'NULL')
+Pop_departements = Pop_departements.replace(',', '.', regex=True)
+Pop_departements["pop"] = Pop_departements["pop"].replace(' ', '', regex=True)
 for i in range(len(Pop_departements)):
     command = (
     """
@@ -207,11 +213,11 @@ for i in range(len(Pop_departements)):
     num_departement, 
     population, 
     annee
-    ) VALUES (%s,%s,%s);
+    ) VALUES ('%s',%s,%s);
     """ % (
-    Pop_departements.loc[i,'numero'], 
-    Pop_departements.loc[i,'pop'], 
-    Pop_departements.loc[i,'annee']
+    Pop_departements['numero'][i], 
+    Pop_departements['pop'][i], 
+    Pop_departements['annee'][i]
     ))
     cur.execute(command)
 
@@ -234,12 +240,19 @@ except (Exception, psycopg2.DatabaseError) as error:
 
 # chargement des données dans le sql
 Recherche_dev = Recherche_dev.replace(np.nan, 'NULL') 
+Recherche_dev = Recherche_dev.replace(',', '.', regex=True)
 for i in range(len(Recherche_dev)):
     command = (
     """
-    INSERT INTO Recherche_dev (num_region, Effort_recherche_dev, annee) 
-    VALUES (%s,%s,%s,'%s','%s','%s','%s');
-    """ % (Recherche_dev.loc[i,'numero'], Recherche_dev.loc[i,'effort'], Recherche_dev.loc[i,'annee'])
+    INSERT INTO Recherche_dev (
+    num_region, 
+    Effort_recherche_dev, 
+    annee
+    ) VALUES (%s,%s,%s);
+    """ % (
+    Recherche_dev['numero'][i], 
+    Recherche_dev['effort'][i], 
+    Recherche_dev['annee'][i])
     )
     cur.execute(command)
 
@@ -262,18 +275,22 @@ except (Exception, psycopg2.DatabaseError) as error:
 
 # chargement des données dans le sql
 Pauvrete = Pauvrete.replace(np.nan, 'NULL') 
+Pauvrete = Pauvrete.replace(',', '.', regex=True)
+Pauvrete = Pauvrete.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Pauvrete)):
+    libelle = Pauvrete.index[i].replace('\'','\'\'')
     command = (
     """
     INSERT INTO Taux_pauvrete (
     libelle,
-    pauvrete,
+    pourcetage,
     annee) 
     VALUES ('%s',%s,%s);
     """ 
-    % (Pauvrete.index[i], 
-    Pauvrete.loc[i,'pauvrete'], 
-    Pauvrete.loc[i,'annee'])
+    % (
+    libelle, 
+    Pauvrete['pauvrete'][i], 
+    Pauvrete['annee'][i])
     )
     cur.execute(command)
 
@@ -298,19 +315,24 @@ except (Exception, psycopg2.DatabaseError) as error:
     
 # chargement des données dans le sql
 Esperance_vie = Esperance_vie.replace(np.nan, 'NULL')
+Esperance_vie = Esperance_vie.replace(',', '.', regex=True)
+Esperance_vie = Esperance_vie.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Esperance_vie)):
+    libelle = Esperance_vie.index[i].replace('\'','\'\'')
     command = (
     """
     INSERT INTO Esperances_Vie (
+    libelle,
     Esperance_vie_hommes,
     Esperance_vie_femmes,
-    annee) 
-    VALUES ('%s',%s,%s);
+    annee
+    ) VALUES ('%s',%s,%s,%s);
     """ 
-    % (Esperance_vie.index[i], 
-    Esperance_vie.loc[i,'esp_vie_h'], 
-    Esperance_vie.loc[i,'esp_vie_f']),
-    Esperance_vie.loc[i,'annee']
+    % (
+    libelle, 
+    Esperance_vie['esp_vie_h'][i], 
+    Esperance_vie['esp_vie_f'][i],
+    Esperance_vie['annee'][i])
     )
     cur.execute(command)
 
@@ -334,20 +356,25 @@ except (Exception, psycopg2.DatabaseError) as error:
     
 # chargement des données dans le sql
 Emploi_diplome = Emploi_diplome.replace(np.nan, 'NULL')
+Emploi_diplome = Emploi_diplome.replace(',', '.', regex=True)
+Emploi_diplome = Emploi_diplome.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Emploi_diplome)):
+    libelle = Emploi_diplome.index[i].replace('\'','\'\'')
     command = (
     """
     INSERT INTO Emploi_diplomes (
+    libelle,
     Taux_emploi,
     Part_jeunes_diplomes_18_25_ans,
-    annee) 
-    VALUES ('%s',%s,%s);
+    annee
+    ) VALUES ('%s',%s,%s, %s);
     """ 
-    % (Esperance_vie.index[i], 
-    Emploi_diplome.loc[i,'taux_emploi'], 
-    Emploi_diplome.loc[i,'jeunes_diplomes']),
-    Emploi_diplome.loc[i,'annee']
-    )
+    % (
+    libelle, 
+    Emploi_diplome['taux_emploi'][i], 
+    Emploi_diplome['jeunes_diplomes'][i],
+    Emploi_diplome['annee'][i]
+    ))
     cur.execute(command)
 
 ##################################### INSERTION_JEUNES ###########################################
@@ -369,18 +396,22 @@ except (Exception, psycopg2.DatabaseError) as error:
     
 # chargement des données dans le sql
 Insertion_jeunes = Insertion_jeunes.replace(np.nan, 'NULL') 
+Insertion_jeunes = Insertion_jeunes.replace(',', '.', regex=True)
+Insertion_jeunes = Insertion_jeunes.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Insertion_jeunes)):
+    libelle = Insertion_jeunes.index[i].replace('\'','\'\'')
     command = (
     """
     INSERT INTO Insertion_jeunes (
     libelle,
-    pourcentage_pop
-    annee) 
-    VALUES ('%s',%s,%s);
+    Pourcentage_jeunes_non_inseres,
+    annee
+    ) VALUES ('%s',%s,%s);
     """ 
-    % (Insertion_jeunes.index[i], 
-    Insertion_jeunes.loc[i,'jeunes_non_inseres'],   
-    Insertion_jeunes.loc[i,'annee']
+    % (
+    libelle, 
+    Insertion_jeunes['jeunes_non_inseres'][i],   
+    Insertion_jeunes['annee'][i]
     ))
     cur.execute(command)
 
@@ -390,7 +421,7 @@ command = (
         """
         CREATE TABLE Zones_inondables (
         libelle VARCHAR(100),
-        Pourcetage_pop FLOAT,
+        Pourcentage_pop FLOAT,
         annee INT
         );
         """
@@ -403,18 +434,22 @@ except (Exception, psycopg2.DatabaseError) as error:
 
 # chargement des données dans le sql
 Zones_inondables = Zones_inondables.replace(np.nan, 'NULL') 
+Zones_inondables = Zones_inondables.replace(',', '.', regex=True)
+Zones_inondables = Zones_inondables.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Zones_inondables)):
+    libelle = Zones_inondables.index[i].replace('\'','\'\'')
     command = (
     """
     INSERT INTO Zones_inondables (
     libelle,
-    pourcentage_pop
-    annee) 
-    VALUES ('%s',%s,%s);
+    Pourcentage_pop,
+    annee
+    ) VALUES ('%s',%s,%s);
     """ 
-    % (Zones_inondables.index[i], 
-    Zones_inondables.loc[i,'zones_inondabes'],   
-    Zones_inondables.loc[i,'annee']
+    % (
+    libelle, 
+    Zones_inondables['zones_inondables'][i],   
+    Zones_inondables['annee'][i]
     ))
     cur.execute(command)
 
@@ -438,8 +473,11 @@ except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
 # chargement des données dans le sql
-Transport = Transport.replace(np.nan, 'NULL') 
+Transport = Transport.replace(np.nan, 'NULL')
+Transport = Transport.replace(',', '.', regex=True)
+Transport = Transport.replace({'\'':'\'\''}, regex=True) 
 for i in range(len(Transport)):
+    libelle = Transport.index[i].replace('\'','\'\'')
     command = (
     """
     INSERT INTO Transport (
@@ -450,11 +488,12 @@ for i in range(len(Transport)):
     annee) 
     VALUES ('%s',%s,%s,%s,%s);
     """ 
-    % (Transport.index[i], 
-    Transport.loc[i,'voiture'],
-    Transport.loc[i,'commun'],
-    Transport.loc[i,'autre'],   
-    Transport.loc[i,'annee'])
+    % (
+    libelle, 
+    Transport['voiture'][i],
+    Transport['commun'][i],
+    Transport['autre'][i],   
+    Transport['annee'][i])
     )
     cur.execute(command)
 
