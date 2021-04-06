@@ -55,8 +55,8 @@ print("\nRegions\n", Regions)
 print(Regions.columns)
 
 ## creation Pop_region ##
-# note : 1) creation dfAnnee 2) renome colonne pop 3) ajout colonne annee
 
+# note : 1) creation dfAnnee 2) renome colonne pop 3) ajout colonne annee
 r_pop_2012 = r_evo[["numero", "pop_2012"]] 
 r_pop_2012 = r_pop_2012.rename(columns = {"pop_2012":"pop"})
 r_pop_2012["annee"] = 2012
@@ -67,7 +67,11 @@ r_pop_2020 = r_evo[["numero","est_2020"]]
 r_pop_2020 = r_pop_2020.rename(columns = {"est_2020":"pop"})
 r_pop_2020["annee"] = 2020
 # Concatenation des dfs
-Pop_region = pd.concat([r_pop_2012, r_pop_2017, r_pop_2020])#, ignore_index=True)
+Pop_region = pd.concat([
+    r_pop_2012, 
+    r_pop_2017, 
+    r_pop_2020
+])
 print("\nPop_region\n", Pop_region) 
 
 ## Creation Recherche_dev ##
@@ -78,8 +82,11 @@ r_eff_2014["annee"] = 2014
 r_eff_2010 = r_eco[["numero", "effort_2010"]]
 r_eff_2010 = r_eff_2010.rename(columns = {"effort_2010": "effort"})
 r_eff_2010["annee"] = 2010
-
-Recherche_dev = pd.concat([r_eff_2010, r_eff_2014])
+# concatenation
+Recherche_dev = pd.concat([
+    r_eff_2010, 
+    r_eff_2014
+])
 print("\nRecherche_Dev\n", Recherche_dev)
 
 ############################## DF propres aux regions ###############################
@@ -152,7 +159,13 @@ d_pauv_2014["annee"] = 2014
 d_pauv_2018 = r_social[["pauvrete_2018"]]
 d_pauv_2018 = r_pauv_2018.rename_axis("libelle").rename(columns={"pauvrete_2018":"pauvrete"})
 d_pauv_2018["annee"] = 2018
-Pauvrete = pd.concat([r_pauv_2014, r_pauv_2018, d_pauv_2014, d_pauv_2018])
+# concatenation
+Pauvrete = pd.concat([
+    r_pauv_2014, 
+    r_pauv_2018, 
+    d_pauv_2014, 
+    d_pauv_2018
+])
 print("\nPauvrete\n", Pauvrete)
 
 ## creation Insertion_jeunes ## 
@@ -176,7 +189,15 @@ d_inser_2014["annee"] = 2014
 d_inser_2017 = d_social[["jeune_ni_2017"]]
 d_inser_2017 = d_inser_2017.rename_axis("libelle").rename(columns={"jeune_ni_2017":"jeunes_non_inseres"})
 d_inser_2017["annee"] = 2017
-Insertion_jeunes = pd.concat([r_inser_2009, r_inser_2014, r_inser_2017, d_inser_2009, d_inser_2014, d_inser_2017])
+# concatenation
+Insertion_jeunes = pd.concat([
+    r_inser_2009, 
+    r_inser_2014, 
+    r_inser_2017, 
+    d_inser_2009, 
+    d_inser_2014, 
+    d_inser_2017
+])
 print("\nInsertion_jeunes\n", Insertion_jeunes)
 
 ## creation Zones_inondables ## 
@@ -194,7 +215,12 @@ d_zone_2008["annee"]=2008
 d_zone_2013 = d_social[["inondable_2013"]]
 d_zone_2013 = d_zone_2013.rename_axis("libelle").rename(columns={"inondable_2013":"zones_inondables"})
 d_zone_2013["annee"]=2013
-Zones_inondables = pd.concat([r_zone_2008, r_zone_2013, d_zone_2008, d_zone_2013])
+# concatenation
+Zones_inondables = pd.concat([
+    r_zone_2008, 
+    r_zone_2013, 
+    d_zone_2008, 
+    d_zone_2013])
 print("\nZones_inondables\n", Zones_inondables)
 
 ## creation Emploi_diplome ##
@@ -212,9 +238,36 @@ d_emp_dip_2009["annee"] = 2009
 d_emp_dip_2014 = d_eco[["te_2014", "dipl_jeune_2014"]]
 d_emp_dip_2014 = d_emp_dip_2014.rename_axis("libelle").rename(columns={"te_2014":"taux_emploi", "dipl_jeune_2014":"jeunes_diplomes"})
 d_emp_dip_2014["annee"] = 2014
-Emploi_diplome = pd.concat([r_emp_dip_2009, r_emp_dip_2014, d_emp_dip_2009, d_emp_dip_2014])
+# concatenation
+Emploi_diplome = pd.concat([
+    r_emp_dip_2009, 
+    r_emp_dip_2014, 
+    d_emp_dip_2009, 
+    d_emp_dip_2014
+])
 print("\nEmploi_diplome\n", Emploi_diplome)
 
 ## creation Transport ## 
-
+# regions
+r_transp_2009 = r_eco[["voiture_2009", "commun_2009", "autre_2009"]]
+r_transp_2009 = r_transp_2009.rename_axis("libelle").rename(columns={"voiture_2009":"voiture", "commun_2009":"commun", "autre_2009":"autre"})
+r_transp_2009["annee"] = 2009
+r_transp_2014 = r_eco[["voiture_2014", "commun_2014", "autre_2014"]]
+r_transp_2014 = r_transp_2014.rename_axis("libelle").rename(columns={"voiture_2014":"voiture", "commun_2014":"commun", "autre_2014":"autre"})
+r_transp_2014["annee"] = 2014
+# departements
+d_transp_2009 = d_eco[["voiture_2009", "commun_2009", "autre_2009"]]
+d_transp_2009 = d_transp_2009.rename_axis("libelle").rename(columns={"voiture_2009":"voiture", "commun_2009":"commun", "autre_2009":"autre"})
+d_transp_2009["annee"] = 2009
+d_transp_2014 = d_eco[["voiture_2014", "commun_2014", "autre_2014"]]
+d_transp_2014 = d_transp_2014.rename_axis("libelle").rename(columns={"voiture_2014":"voiture", "commun_2014":"commun", "autre_2014":"autre"})
+d_transp_2014["annee"] = 2014
+# concatenation 
+Transport = pd.concat([
+    r_transp_2009,
+    r_transp_2014,
+    d_transp_2009,
+    d_transp_2014
+])
+print("\nTransport\n", Transport)
 ##  
