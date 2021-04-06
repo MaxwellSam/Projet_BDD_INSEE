@@ -5,7 +5,7 @@ BDD
 04/2021
 Projet Insee
 
-title : PrepData2.py
+title : PrepData.py
 authors : MAXWELL - GOMES - SOU
 description : Importation des csv et génération des dataframes
 """
@@ -52,9 +52,8 @@ Regions = dfReg[[
     'poids_2015'
 ]]
 print("\nRegions\n", Regions)
-print(Regions.columns)
 
-## creation Pop_region ##
+## creation Pop_regions ##
 
 # note : 1) creation dfAnnee 2) renome colonne pop 3) ajout colonne annee
 r_pop_2012 = r_evo[["numero", "pop_2012"]] 
@@ -67,12 +66,12 @@ r_pop_2020 = r_evo[["numero","est_2020"]]
 r_pop_2020 = r_pop_2020.rename(columns = {"est_2020":"pop"})
 r_pop_2020["annee"] = 2020
 # Concatenation des dfs
-Pop_region = pd.concat([
+Pop_regions = pd.concat([
     r_pop_2012, 
     r_pop_2017, 
     r_pop_2020
 ])
-print("\nPop_region\n", Pop_region) 
+print("\nPop_regions\n", Pop_regions) 
 
 ## Creation Recherche_dev ##
 
@@ -110,6 +109,28 @@ Departements = dfDep[[
     'poids_2015'
 ]]
 print("\nDepartemens\n", Departements)
+
+## Creation Pop_Departements ##
+d_pop_2012 = d_evo[["numero", "pop_2012"]] 
+d_pop_2012 = d_pop_2012.rename(columns = {"pop_2012":"pop"})
+d_pop_2012["annee"] = 2012
+d_pop_2017 = d_evo[["numero","pop_2017"]] 
+d_pop_2017 = d_pop_2017.rename(columns = {"pop_2017":"pop"})
+d_pop_2017["annee"] = 2017
+d_pop_2018 = d_evo[["numero","pop_2018"]] 
+d_pop_2018 = d_pop_2018.rename(columns = {"pop_2018":"pop"})
+d_pop_2018["annee"] = 2018
+d_pop_2020 = d_evo[["numero","est_2020"]] 
+d_pop_2020 = d_pop_2020.rename(columns = {"est_2020":"pop"})
+d_pop_2020["annee"] = 2020
+# Concatenation des dfs
+Pop_departements = pd.concat([
+    d_pop_2012, 
+    d_pop_2017, 
+    d_pop_2018,
+    d_pop_2020
+])
+print("\nPop_departements\n", Pop_departements) 
 
 ############################### DF commun #################################
 

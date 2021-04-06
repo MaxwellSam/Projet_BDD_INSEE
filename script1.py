@@ -60,6 +60,39 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
+## Chargement des données dans le sql :
+Regions = Regions.replace(np.nan, 'NULL')
+for i in range(len(Regions)):
+    command = ("""
+    INSERT INTO Regions (
+    num_region, 
+    ncc, 
+    libelle, 
+    variation_pop_2012_2017, 
+    variation_population_naturelle, 
+    variation_population_entrees_sorties, 
+    disparite_niveau_vie_2014, 
+    eloignement_service_sante_2016, 
+    taux_activite_2017,
+    part_diplomes_2017,
+    poids_economie_2015 
+    ) VALUES (%s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s)
+    """ % (
+    Regions.loc[i, "reg"], 
+    Regions.loc[i, "ncc"], 
+    Regions.loc[i, "libelle"], 
+    Regions.loc[i, "var_2012_2017"], 
+    Regions.loc[i, "var_nat"], 
+    Regions.loc[i, "var_es"],  
+    Regions.loc[i, "disp_2014"],
+    Regions.loc[i, "eloignement_2016"],
+    Regions.loc[i, "ta_2017"],
+    Regions.loc[i, "dipl_2017"],
+    Regions.loc[i, "poids_2015"],
+    ))
+    cur.execute(command)
+
+
 ################################# DEPARTEMENT ########################################
 print("Creation table Departement") 
 command = (
@@ -86,6 +119,40 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
+# Chargement des données dans le sql :
+Departements = Departements.replace(np.nan, 'NULL')
+for i in range(len(Departements)):
+    command = ("""
+    INSERT INTO Departements (
+    num_dep,
+    num_region, 
+    ncc, 
+    libelle, 
+    variation_pop_2012_2017, 
+    variation_population_naturelle, 
+    variation_population_entrees_sorties, 
+    disparite_niveau_vie_2014, 
+    eloignement_service_sante_2016, 
+    taux_activite_2017,
+    part_diplomes_2017,
+    poids_economie_2015 
+    ) VALUES (%s, %s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s)
+    """ % (
+    Departements.loc[i, "dep"],
+    Departements.loc[i, "reg"], 
+    Departements.loc[i, "ncc"], 
+    Departements.loc[i, "libelle"], 
+    Departements.loc[i, "var_2012_2017"], 
+    Departements.loc[i, "var_nat"], 
+    Departements.loc[i, "var_es"],  
+    Departements.loc[i, "disp_2014"],
+    Departements.loc[i, "eloignement_2016"],
+    Departements.loc[i, "ta_2017"],
+    Departements.loc[i, "dipl_2017"],
+    Departements.loc[i, "poids_2015"]
+    ))
+    cur.execute(command)
+
 ##################################### POP ###########################################
 print("Creation table Population_Regions") 
 command = (
@@ -103,13 +170,25 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
     
+# chargement des données dans le sql 
+Pop_regions = Pop_regions.replace(np.nan, 'NULL')
+for i in range(len(Pop_regions)):
+    command = ("""
+    INSERT INTO Population_Regions (num_region, population, annee) 
+    VALUES (%s,%s,%s);
+    """ % (
+    Pop_region.loc[i,'numero'], 
+    Pop_region.loc[i,'pop'], 
+    Pop_region.loc[i,'annee']
+    ))
+    cur.execute(command)
+    
 print("Creation table Population_departements") 
-command = (
-        """
-       CREATE TABLE Population_Departements (
-       num_departement INT NOT NULL, 
-       population FLOAT, 
-       annee INT
+command = ("""
+        CREATE TABLE Population_Departements (
+        num_departement INT NOT NULL, 
+        population FLOAT, 
+        annee INT
        );
        """
 )
@@ -118,6 +197,23 @@ try:
     print("Table Populations_departements cree")
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
+    
+# chargement des données dans le sql 
+Pop_departements = Pop_departements.replace(np.nan, 'NULL')
+for i in range(len(Pop_departements)):
+    command = (
+    """
+    INSERT INTO Population_Departements (
+    num_departement, 
+    population, 
+    annee
+    ) VALUES (%s,%s,%s);
+    """ % (
+    Pop_departements.loc[i,'numero'], 
+    Pop_departements.loc[i,'pop'], 
+    Pop_departements.loc[i,'annee']
+    ))
+    cur.execute(command)
 
 ##################################### RECH_DEV ###########################################
 print("Creation table Recherche_dev") 
@@ -136,6 +232,17 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
+# chargement des données dans le sql
+Recherche_dev = Recherche_dev.replace(np.nan, 'NULL') 
+for i in range(len(Recherche_dev)):
+    command = (
+    """
+    INSERT INTO Recherche_dev (num_region, Effort_recherche_dev, annee) 
+    VALUES (%s,%s,%s,'%s','%s','%s','%s');
+    """ % (Recherche_dev.loc[i,'numero'], Recherche_dev.loc[i,'effort'], Recherche_dev.loc[i,'annee'])
+    )
+    cur.execute(command)
+
 ##################################### TAUX_PAUVRETE ###########################################
 print("Creation table Taux_pauvrete") 
 command = (
@@ -152,6 +259,24 @@ try:
     print("Table Taux_Pauvrete cree")
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
+
+# chargement des données dans le sql
+Pauvrete = Pauvrete.replace(np.nan, 'NULL') 
+for i in range(len(Pauvrete)):
+    command = (
+    """
+    INSERT INTO Taux_pauvrete (
+    libelle,
+    pauvrete,
+    annee) 
+    VALUES ('%s',%s,%s);
+    """ 
+    % (Pauvrete.index[i], 
+    Pauvrete.loc[i,'pauvrete'], 
+    Pauvrete.loc[i,'annee'])
+    )
+    cur.execute(command)
+
 
 ##################################### ESPERANCE_VIE ###########################################
 print("Creation table Esperance_vie") 
@@ -170,6 +295,24 @@ try:
     print("Table Esperance_vie cree")
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
+    
+# chargement des données dans le sql
+Esperance_vie = Esperance_vie.replace(np.nan, 'NULL')
+for i in range(len(Esperance_vie)):
+    command = (
+    """
+    INSERT INTO Esperances_Vie (
+    Esperance_vie_hommes,
+    Esperance_vie_femmes,
+    annee) 
+    VALUES ('%s',%s,%s);
+    """ 
+    % (Esperance_vie.index[i], 
+    Esperance_vie.loc[i,'esp_vie_h'], 
+    Esperance_vie.loc[i,'esp_vie_f']),
+    Esperance_vie.loc[i,'annee']
+    )
+    cur.execute(command)
 
 ##################################### EMPLOI_DIMPLOMES ###########################################
 print("Creation table Emploi_diplomes") 
@@ -188,6 +331,24 @@ try:
     print("Table Emploi_diplomes cree")
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
+    
+# chargement des données dans le sql
+Emploi_diplome = Emploi_diplome.replace(np.nan, 'NULL')
+for i in range(len(Emploi_diplome)):
+    command = (
+    """
+    INSERT INTO Emploi_diplomes (
+    Taux_emploi,
+    Part_jeunes_diplomes_18_25_ans,
+    annee) 
+    VALUES ('%s',%s,%s);
+    """ 
+    % (Esperance_vie.index[i], 
+    Emploi_diplome.loc[i,'taux_emploi'], 
+    Emploi_diplome.loc[i,'jeunes_diplomes']),
+    Emploi_diplome.loc[i,'annee']
+    )
+    cur.execute(command)
 
 ##################################### INSERTION_JEUNES ###########################################
 print("Creation table Insertion_jeunes") 
@@ -205,6 +366,23 @@ try:
     print("Table Insertion_jeunes cree")
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
+    
+# chargement des données dans le sql
+Insertion_jeunes = Insertion_jeunes.replace(np.nan, 'NULL') 
+for i in range(len(Insertion_jeunes)):
+    command = (
+    """
+    INSERT INTO Insertion_jeunes (
+    libelle,
+    pourcentage_pop
+    annee) 
+    VALUES ('%s',%s,%s);
+    """ 
+    % (Insertion_jeunes.index[i], 
+    Insertion_jeunes.loc[i,'jeunes_non_inseres'],   
+    Insertion_jeunes.loc[i,'annee']
+    ))
+    cur.execute(command)
 
 ##################################### ZONES_INONDABLES ###########################################
 print("Creation table Zones_Inondables") 
@@ -223,13 +401,32 @@ try:
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
 
+# chargement des données dans le sql
+Zones_inondables = Zones_inondables.replace(np.nan, 'NULL') 
+for i in range(len(Zones_inondables)):
+    command = (
+    """
+    INSERT INTO Zones_inondables (
+    libelle,
+    pourcentage_pop
+    annee) 
+    VALUES ('%s',%s,%s);
+    """ 
+    % (Zones_inondables.index[i], 
+    Zones_inondables.loc[i,'zones_inondabes'],   
+    Zones_inondables.loc[i,'annee']
+    ))
+    cur.execute(command)
+
 ##################################### TRANSPORT ###########################################
 print("Creation table Transport") 
 command = (
         """
         CREATE TABLE Transport (
         libelle VARCHAR(100),
-        Pourcentage_pop FLOAT,
+        pourcentage_voiture FLOAT,
+        pourcentage_transport_commun FLOAT,
+        pourcentage_autre FLOAT,
         annee INT
         );
         """
@@ -239,6 +436,27 @@ try:
     print("Table Transport cree")
 except (Exception, psycopg2.DatabaseError) as error:
     print(error)
+
+# chargement des données dans le sql
+Transport = Transport.replace(np.nan, 'NULL') 
+for i in range(len(Transport)):
+    command = (
+    """
+    INSERT INTO Transport (
+    libelle,
+    pourcentage_voiture,
+    pourcentage_transport_commun,
+    pourcentage_autre,
+    annee) 
+    VALUES ('%s',%s,%s,%s,%s);
+    """ 
+    % (Transport.index[i], 
+    Transport.loc[i,'voiture'],
+    Transport.loc[i,'commun'],
+    Transport.loc[i,'autre'],   
+    Transport.loc[i,'annee'])
+    )
+    cur.execute(command)
 
 conn.commit()
 cur.close()
