@@ -106,4 +106,115 @@ print("\nDepartemens\n", Departements)
 
 ############################### DF commun #################################
 
-## 
+## creation Esperance_vie ##
+# region 
+r_esp_2010 = r_social[["esp_h_2010", "esp_f_2010"]]
+r_esp_2010 = r_esp_2010.rename_axis("libelle").rename(columns={"esp_h_2010":"esp_vie_h", "esp_f_2010":"esp_vie_f"})
+r_esp_2010["annee"] = 2010
+r_esp_2015 = r_social[["esp_h_2015", "esp_f_2015"]]
+r_esp_2015 = r_esp_2015.rename_axis("libelle").rename(columns={"esp_h_2015":"esp_vie_h", "esp_f_2015":"esp_vie_f"})
+r_esp_2015["annee"] = 2015
+r_esp_2019 = r_social[["esp_h_2019", "esp_f_2019"]]
+r_esp_2019 = r_esp_2019.rename_axis("libelle").rename(columns={"esp_h_2019":"esp_vie_h", "esp_f_2019":"esp_vie_f"})
+r_esp_2019["annee"] = 2019
+# departement 
+d_esp_2010 = d_social[["esp_h_2010", "esp_f_2010"]]
+d_esp_2010 = d_esp_2010.rename_axis("libelle").rename(columns={"esp_h_2010":"esp_vie_h", "esp_f_2010":"esp_vie_f"})
+d_esp_2010["annee"] = 2010
+d_esp_2015 = d_social[["esp_h_2015", "esp_f_2015"]]
+d_esp_2015 = d_esp_2015.rename_axis("libelle").rename(columns={"esp_h_2015":"esp_vie_h", "esp_f_2015":"esp_vie_f"})
+d_esp_2015["annee"] = 2015
+d_esp_2019 = d_social[["esp_h_2019", "esp_f_2019"]]
+d_esp_2019 = d_esp_2019.rename_axis("libelle").rename(columns={"esp_h_2019":"esp_vie_h", "esp_f_2019":"esp_vie_f"})
+d_esp_2019["annee"] = 2019
+# concatenation 
+Esperance_vie = pd.concat([
+    r_esp_2010, 
+    r_esp_2015, 
+    r_esp_2019, 
+    d_esp_2010, 
+    d_esp_2015, 
+    d_esp_2019])
+print("\nEsperance_vie\n", Esperance_vie)
+
+## creation Taux_pauvrete ## 
+# region
+r_pauv_2014 = r_social[["pauvrete_2014"]]
+r_pauv_2014 = r_pauv_2014.rename_axis("libelle").rename(columns={"pauvrete_2014":"pauvrete"})
+r_pauv_2014["annee"] = 2014
+r_pauv_2018 = r_social[["pauvrete_2018"]]
+r_pauv_2018 = r_pauv_2018.rename_axis("libelle").rename(columns={"pauvrete_2018":"pauvrete"})
+r_pauv_2018["annee"] = 2018
+# departements
+d_pauv_2014 = r_social[["pauvrete_2014"]]
+d_pauv_2014 = r_pauv_2014.rename_axis("libelle").rename(columns={"pauvrete_2014":"pauvrete"})
+d_pauv_2014["annee"] = 2014
+d_pauv_2018 = r_social[["pauvrete_2018"]]
+d_pauv_2018 = r_pauv_2018.rename_axis("libelle").rename(columns={"pauvrete_2018":"pauvrete"})
+d_pauv_2018["annee"] = 2018
+Pauvrete = pd.concat([r_pauv_2014, r_pauv_2018, d_pauv_2014, d_pauv_2018])
+print("\nPauvrete\n", Pauvrete)
+
+## creation Insertion_jeunes ## 
+# region 
+r_inser_2009 = r_social[["jeune_ni_2009"]]
+r_inser_2009 = r_inser_2009.rename_axis("libelle").rename(columns={"jeune_ni_2009":"jeunes_non_inseres"})
+r_inser_2009["annee"] = 2009
+r_inser_2014 = r_social[["jeune_ni_2014"]]
+r_inser_2014 = r_inser_2014.rename_axis("libelle").rename(columns={"jeune_ni_2014":"jeunes_non_inseres"})
+r_inser_2014["annee"] = 2014
+r_inser_2017 = r_social[["jeune_ni_2017"]]
+r_inser_2017 = r_inser_2017.rename_axis("libelle").rename(columns={"jeune_ni_2017":"jeunes_non_inseres"})
+r_inser_2017["annee"] = 2017
+# departements
+d_inser_2009 = d_social[["jeune_ni_2009"]]
+d_inser_2009 = d_inser_2009.rename_axis("libelle").rename(columns={"jeune_ni_2009":"jeunes_non_inseres"})
+d_inser_2009["annee"] = 2009
+d_inser_2014 = d_social[["jeune_ni_2014"]]
+d_inser_2014 = d_inser_2014.rename_axis("libelle").rename(columns={"jeune_ni_2014":"jeunes_non_inseres"})
+d_inser_2014["annee"] = 2014
+d_inser_2017 = d_social[["jeune_ni_2017"]]
+d_inser_2017 = d_inser_2017.rename_axis("libelle").rename(columns={"jeune_ni_2017":"jeunes_non_inseres"})
+d_inser_2017["annee"] = 2017
+Insertion_jeunes = pd.concat([r_inser_2009, r_inser_2014, r_inser_2017, d_inser_2009, d_inser_2014, d_inser_2017])
+print("\nInsertion_jeunes\n", Insertion_jeunes)
+
+## creation Zones_inondables ## 
+# regions
+r_zone_2008 = r_social[["inondable_2008"]]
+r_zone_2008 = r_zone_2008.rename_axis("libelle").rename(columns={"inondable_2008":"zones_inondables"})
+r_zone_2008["annee"]=2008
+r_zone_2013 = r_social[["inondable_2013"]]
+r_zone_2013 = r_zone_2013.rename_axis("libelle").rename(columns={"inondable_2013":"zones_inondables"})
+r_zone_2013["annee"]=2013
+# departements
+d_zone_2008 = d_social[["inondable_2008"]]
+d_zone_2008 = d_zone_2008.rename_axis("libelle").rename(columns={"inondable_2008":"zones_inondables"})
+d_zone_2008["annee"]=2008
+d_zone_2013 = d_social[["inondable_2013"]]
+d_zone_2013 = d_zone_2013.rename_axis("libelle").rename(columns={"inondable_2013":"zones_inondables"})
+d_zone_2013["annee"]=2013
+Zones_inondables = pd.concat([r_zone_2008, r_zone_2013, d_zone_2008, d_zone_2013])
+print("\nZones_inondables\n", Zones_inondables)
+
+## creation Emploi_diplome ##
+# regions 
+r_emp_dip_2009 = r_eco[["te_2009", "dipl_jeune_2009"]]
+r_emp_dip_2009 = r_emp_dip_2009.rename_axis("libelle").rename(columns={"te_2009":"taux_emploi", "dipl_jeune_2009":"jeunes_diplomes"})
+r_emp_dip_2009["annee"] = 2009
+r_emp_dip_2014 = r_eco[["te_2014", "dipl_jeune_2014"]]
+r_emp_dip_2014 = r_emp_dip_2014.rename_axis("libelle").rename(columns={"te_2014":"taux_emploi", "dipl_jeune_2014":"jeunes_diplomes"})
+r_emp_dip_2014["annee"] = 2014
+# departements
+d_emp_dip_2009 = d_eco[["te_2009", "dipl_jeune_2009"]]
+d_emp_dip_2009 = d_emp_dip_2009.rename_axis("libelle").rename(columns={"te_2009":"taux_emploi", "dipl_jeune_2009":"jeunes_diplomes"})
+d_emp_dip_2009["annee"] = 2009
+d_emp_dip_2014 = d_eco[["te_2014", "dipl_jeune_2014"]]
+d_emp_dip_2014 = d_emp_dip_2014.rename_axis("libelle").rename(columns={"te_2014":"taux_emploi", "dipl_jeune_2014":"jeunes_diplomes"})
+d_emp_dip_2014["annee"] = 2014
+Emploi_diplome = pd.concat([r_emp_dip_2009, r_emp_dip_2014, d_emp_dip_2009, d_emp_dip_2014])
+print("\nEmploi_diplome\n", Emploi_diplome)
+
+## creation Transport ## 
+
+##  
