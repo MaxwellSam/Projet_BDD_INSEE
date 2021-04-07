@@ -266,7 +266,7 @@ command = (
         """
         CREATE TABLE Taux_pauvrete (
         libelle VARCHAR(100),
-        pourcetage FLOAT,
+        pourcentage FLOAT,
         annee INT
         );
         """
