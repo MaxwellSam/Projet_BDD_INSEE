@@ -15,9 +15,11 @@ description : Importation des csv et génération des dataframes
 print("# Importation des csv ...")
 #1) importation des csv concernant les régions : 
 region = pd.read_csv('data/region2020.csv', sep=',', index_col="nccenr")
+print(region)
 print("** data/region2020.csv")
 r_evo = pd.read_csv('data/f_region_evo.csv', sep=';', index_col="reg")
 print("** data/f_region_evo.csv")
+print(r_evo)
 r_social = pd.read_csv('data/f_region_social.csv', sep=';', index_col="reg")
 print("** data/f_region_social.csv")
 r_eco = pd.read_csv('data/f_region_eco.csv', sep=';', index_col="reg")
@@ -72,7 +74,7 @@ Pop_regions = pd.concat([
     r_pop_2012, 
     r_pop_2017, 
     r_pop_2020
-])
+], ignore_index=True)
 print("\nPop_regions\n", Pop_regions) 
 
 ## Creation Recherche_dev ##

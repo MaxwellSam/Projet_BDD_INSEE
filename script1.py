@@ -83,7 +83,7 @@ for i in range(len(Regions)):
     poids_economie_2015 
     ) VALUES (%s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s);
     """ % (
-    Regions["reg"][i], 
+    Regions.index[i], 
     Regions["ncc"][i], 
     Regions["libelle"][i], 
     Regions["var_2012_2017"][i], 
@@ -144,7 +144,7 @@ for i in range(len(Departements)):
     poids_economie_2015 
     ) VALUES ('%s', %s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s);
     """ % (
-    Departements["dep"][i],
+    Departements.index[i],
     Departements["reg"][i], 
     Departements["ncc"][i], 
     Departements["libelle"][i], 
@@ -185,7 +185,7 @@ for i in range(len(Pop_regions)):
     INSERT INTO Population_Regions (num_region, population, annee) 
     VALUES (%s,%s,%s);
     """ % (
-    Pop_regions['numero'][i], 
+    Pop_regions.index[i], 
     Pop_regions['pop'][i], 
     Pop_regions['annee'][i]
     ))
@@ -219,7 +219,7 @@ for i in range(len(Pop_departements)):
     annee
     ) VALUES ('%s',%s,%s);
     """ % (
-    Pop_departements['numero'][i], 
+    Pop_departements.index[i], 
     Pop_departements['pop'][i], 
     Pop_departements['annee'][i]
     ))
