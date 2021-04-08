@@ -252,11 +252,15 @@ def displayPauvreteSelectedDepartement():
 print("######## Programme de requetes SQL ##########\n######### base de donnée INSEE #########")
 
 print("### Reponses aux questions : ")
+# Q1 : 
 command = """
-SELECT libelle FROM Taux_pauvrete WHERE annee = 2018 
+SELECT DISTINCT libelle FROM Taux_pauvrete WHERE annee = 2018 
 AND pourcentage > 18 AND libelle in (SELECT libelle 
 FROM Departements);
 """
+cur.execute(command)
+res = cur.fetchall()
+print("Q1) Departement aux taux de pauvreté > 18 % en 2018 :\n", res)
 
 while(True):
     diplayMenu()
