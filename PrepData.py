@@ -74,7 +74,7 @@ Pop_regions = pd.concat([
     r_pop_2012, 
     r_pop_2017, 
     r_pop_2020
-], ignore_index=True)
+])
 print("\nPop_regions\n", Pop_regions) 
 
 ## Creation Recherche_dev ##

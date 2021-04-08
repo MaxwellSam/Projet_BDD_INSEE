@@ -67,6 +67,7 @@ except (Exception, psycopg2.DatabaseError) as error:
 ## Chargement des données dans le sql :
 Regions = Regions.replace(np.nan, 'NULL')
 Regions = Regions.replace(',', '.', regex=True)
+Regions = Regions.replace({'\'':'\'\''}, regex=True)
 for i in range(len(Regions)):
     command = ("""
     INSERT INTO Regions (
@@ -83,7 +84,7 @@ for i in range(len(Regions)):
     poids_economie_2015 
     ) VALUES (%s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s);
     """ % (
-    Regions.index[i], 
+    Regions["reg"][i], 
     Regions["ncc"][i], 
     Regions["libelle"][i], 
     Regions["var_2012_2017"][i], 
@@ -144,7 +145,7 @@ for i in range(len(Departements)):
     poids_economie_2015 
     ) VALUES ('%s', %s, '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s);
     """ % (
-    Departements.index[i],
+    Departements["dep"][i],
     Departements["reg"][i], 
     Departements["ncc"][i], 
     Departements["libelle"][i], 
@@ -179,13 +180,14 @@ except (Exception, psycopg2.DatabaseError) as error:
 # chargement des données dans le sql 
 Pop_regions = Pop_regions.replace(np.nan, 'NULL')
 Pop_regions = Pop_regions.replace(',', '.', regex=True)
+Pop_regions = Pop_regions.replace({'\'':'\'\''}, regex=True)
 Pop_regions["pop"] = Pop_regions["pop"].replace(' ', '', regex=True)
 for i in range(len(Pop_regions)):
     command = ("""
     INSERT INTO Population_Regions (num_region, population, annee) 
     VALUES (%s,%s,%s);
     """ % (
-    Pop_regions.index[i], 
+    Pop_regions['numero'][i], 
     Pop_regions['pop'][i], 
     Pop_regions['annee'][i]
     ))
@@ -209,6 +211,7 @@ except (Exception, psycopg2.DatabaseError) as error:
 # chargement des données dans le sql 
 Pop_departements = Pop_departements.replace(np.nan, 'NULL')
 Pop_departements = Pop_departements.replace(',', '.', regex=True)
+Pop_departements = Pop_departements.replace({'\'':'\'\''}, regex=True)
 Pop_departements["pop"] = Pop_departements["pop"].replace(' ', '', regex=True)
 for i in range(len(Pop_departements)):
     command = (
@@ -219,7 +222,7 @@ for i in range(len(Pop_departements)):
     annee
     ) VALUES ('%s',%s,%s);
     """ % (
-    Pop_departements.index[i], 
+    Pop_departements['numero'][i], 
     Pop_departements['pop'][i], 
     Pop_departements['annee'][i]
     ))
@@ -287,7 +290,7 @@ for i in range(len(Pauvrete)):
     """
     INSERT INTO Taux_pauvrete (
     libelle,
-    pourcetage,
+    pourcentage,
     annee) 
     VALUES ('%s',%s,%s);
     """ 

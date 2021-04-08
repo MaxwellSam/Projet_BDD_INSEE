@@ -192,7 +192,7 @@ def displaySpecificThemeSelectedDepartement(cur):
     [1] Economie
     [2] social
     """
-    command = "SELECT DISTINCT libelle, num_departement FROM Departements"
+    command = "SELECT DISTINCT libelle, num_departement FROM Departements;"
     cur.execute(command)
     res : cur.fetchall()
     print("choisir un département")
@@ -219,7 +219,7 @@ def displayPauvreteSelectedDepartement():
     """
     Affiche le nombre d'habitants sous le seuil de pauvreté en 2018
     """
-    command = "SELECT DISTINCT libelle, num_departement FROM Departements"
+    command = "SELECT DISTINCT libelle, num_departement FROM Departements;"
     cur.execute(command)
     res : cur.fetchall()
     print("choisir un département")
@@ -236,11 +236,11 @@ def displayPauvreteSelectedDepartement():
         print("Erreur : Vous devez choisir un numero de département valide")
     command = ("""
     SELECT Departements.libelle, Population_departements.population, Taux_pauvrete.pourcetage 
-        FROM Population_departements INNER JOIN Departements 
-        ON Departements.num_dep = Population_departements.num_departement 
-        INNER JOIN Taux_pauvrete ON Taux_pauvrete.libelle = Departements.libelle 
-        WHERE Taux_pauvrete.annee = 2018 AND Population_departements.annee = 2018 
-        AND Departements.num_dep = '%s';
+    FROM Population_departements INNER JOIN Departements 
+    ON Departements.num_dep = Population_departements.num_departement 
+    INNER JOIN Taux_pauvrete ON Taux_pauvrete.libelle = Departements.libelle 
+    WHERE Taux_pauvrete.annee = 2018 AND Population_departements.annee = 2018 
+    AND Departements.num_dep = '%s';
     """ % (dep))
     cur.execute(command)
     res = cur.fetchall()
@@ -250,6 +250,14 @@ def displayPauvreteSelectedDepartement():
 
 # Prog Principal 
 print("######## Programme de requetes SQL ##########\n######### base de donnée INSEE #########")
+
+print("### Reponses aux questions : ")
+command = """
+SELECT libelle FROM Taux_pauvrete WHERE annee = 2018 
+AND pourcentage > 18 AND libelle in (SELECT libelle 
+FROM Departements);
+"""
+
 while(True):
     diplayMenu()
     rep = input("\t\tMenu\nEntrer votre choix : ")
