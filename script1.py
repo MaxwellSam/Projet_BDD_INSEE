@@ -196,7 +196,7 @@ for i in range(len(Pop_regions)):
 print("Creation table Population_departements") 
 command = ("""
         CREATE TABLE Population_Departements (
-        num_departement VARCHAR(1000), 
+        num_dep VARCHAR(1000), 
         population FLOAT, 
         annee INT
        );
@@ -217,7 +217,7 @@ for i in range(len(Pop_departements)):
     command = (
     """
     INSERT INTO Population_Departements (
-    num_departement, 
+    num_dep, 
     population, 
     annee
     ) VALUES ('%s',%s,%s);
